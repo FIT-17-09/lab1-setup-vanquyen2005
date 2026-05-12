@@ -108,10 +108,17 @@ Service nào gọi đến service này?
 • Dashboard/Frontend — lấy báo cáo để hiển thị
 
 ## 8. Sơ đồ minh họa
-graph TD
-    A[Dashboard/Frontend] --> B[Analytics Service]
-    C[Admin/Operator] --> B
-    B --> D[IoT Ingestion]
-    B --> E[Camera/AI Vision]
-    B --> F[Access Gate]
-    B --> G[Core Business]
+```mermaid
+flowchart LR
+  IoT[IoT Ingestion] --> Analytics[Analytics Service]
+  Cam[Camera Stream] --> Analytics
+  AI[AI Vision] --> Analytics
+  Gate[Access Gate] --> Analytics
+  Core[Core Business] --> Analytics
+
+  Analytics --> DB[(PostgreSQL / MongoDB / SQLite)]
+  Analytics --> Dash[Dashboard / Frontend]
+```
+
+---
+
