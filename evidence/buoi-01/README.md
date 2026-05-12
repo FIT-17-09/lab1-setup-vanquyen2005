@@ -1,124 +1,66 @@
-# Service Boundary của nhóm
+# Minh chứng Buổi 1
 
-## 1. Thông tin nhóm
+Thư mục này dùng để nộp minh chứng thiết lập môi trường lab.
 
-• Tên nhóm: Nhóm 6
+## Sinh viên điền thông tin
 
-• Lớp: CNTT 17-09
+- Họ tên: Võ Văn Quyền 
+- Mã sinh viên: 1771020583
+- Nhóm: 6
+- Vai trò dự kiến trong nhóm:Backend Developer (phụ trách xây dựng API và xử lý dữ liệu)
+- Hệ điều hành: Windows 10
+- Ghi chú:Dùng Miniconda, Git và thiết lập môi trường thành công
 
-• Thành viên: Võ Văn Quyền, Lê Phi Trường, Nguyễn Xuân Ninh
+## Các file minh chứng nên có
 
-• Service nhóm phụ trách: Analytics
+Các file minh chứng nên có
+tool-versions.txt → chứa thông tin version của các công cụ (Node, Git, Docker...)
+docker-version.txt → kết quả lệnh docker --version
+compose-version.txt → kết quả lệnh docker-compose --version
+hello-world.txt → kết quả chạy container hello-world
+smoke-test-result.txt → kiểm tra hệ thống hoạt động
+image-list.txt → danh sách Docker images (docker images)
+git-log.txt → lịch sử commit (git log)
+checklist.md → checklist hoàn thành
+known-issues.md → các lỗi gặp phải
+Cách sinh file tự động
+Windows (PowerShell)
+.\scripts\collect_session01_evidence.ps1
+📌 Nội dung checklist.md (bạn có thể tạo file này)
+# Checklist Buổi 1
 
-• Sản phẩm tổng thể của lớp: A5 - Xây dựng dịch vụ tổng hợp và phân tích dữ liệu.
+- [x] Cài đặt Git
+- [x] Cài đặt Docker
+- [x] Cài đặt Docker Compose
+- [x] Chạy thử container hello-world
+- [x] Kiểm tra docker images
+- [x] Clone repository thành công
+- [x] Push code lên GitHub
+⚠️ Nội dung known-issues.md
+# Known Issues
 
-## 2. Actor
+## Lỗi 1: Git push bị lỗi "src refspec main does not match any"
+- Nguyên nhân: Chưa commit file nào
+- Cách fix:
+  git add .
+  git commit -m "first commit"
+  git branch -M main
+  git push -u origin main
 
-Ai tương tác với hệ thống/service? Dashboard/Frontend — gọi API để hiển thị báo cáo, biểu đồ Admin/Operator — xem thống kê, báo cáo hệ thống Các service khác — IoT Ingestion, Camera/AI Vision, Access Gate, Core Business (cung cấp dữ liệu)
+## Lỗi 2: Docker không chạy
+- Nguyên nhân: Chưa bật Docker Desktop
+- Cách fix: Mở Docker Desktop trước khi chạy lệnh
+📊 Liên hệ với đề tài A5
+Service của nhóm
 
-## 3. System Boundary
+Hệ thống dịch vụ tổng hợp và phân tích dữ liệu sẽ:
 
-Nhóm em xây phần nào?
-
-• Analytics Service
-
-Phần nhóm kiểm soát:
-
-• FastAPI/Node.js app — viết code các endpoint /analytics/...
-
-• Logic tổng hợp — code tính toán metric (đếm lượt, tính trung bình nhiệt độ, đếm cảnh báo,...)
-
-• Database — setup PostgreSQL/MongoDB để lưu dữ liệu đã tổng hợp
-
-• Docker container — đóng gói service chạy được
-
-Phần nhóm chỉ tích hợp:
-
-• IoT Ingestion Service
-
-• Camera Stream / AI Vision Service
-
-• Access Gate Service
-
-• Core Business Service
-
-## 4. Service Boundary
-
-Service của nhóm có trách nhiệm gì?
-
-• Thu thập dữ liệu từ các service khác
-
-• Tổng hợp và tính toán metric
-
-• Trả về báo cáo JSON theo yêu cầu
-
-• Cung cấp endpoint cho dashboard
-
-Service KHÔNG làm gì?
-
-• Không xử lý trực tiếp dữ liệu cảm biến thô
-
-• Không điều khiển thiết bị IoT
-
-• Không xử lý nhận diện khuôn mặt/hình ảnh
-
-• Không ra quyết định kiểm soát truy cập
-
-## 5. Input / Output
-
-### Input
-
-• Dữ liệu cảm biến từ IoT Ingestion (nhiệt độ, chuyển động)
-
-• Dữ liệu phát hiện từ Camera/AI Vision
-
-• Dữ liệu ra/vào từ Access Gate
-
-• Dữ liệu cảnh báo từ Core Business
-
-### Output
-
-{ "date": "2026-05-02", "total_access": 120, "total_alerts": 5, "avg_temperature": 30.8, "motion_detections": 45, "abnormal_events": 3 }
-
-## 6. API dự kiến
-
-|  |  |  |
-|--------|----------|-------------|
-| GET | /health | Kiểm tra service |
-| GET | /analytics/summary | Báo cáo tổng hợp theo ngày |
-| GET | /analytics/access | Thống kê lượt ra/vào theo giờ |
-| GET | /analytics/temperature | Nhiệt độ trung bình theo phòng/khu vực |
-| GET | /analytics/alerts | Số cảnh báo trong ngày |
-| GET | /analytics/motion | Số lần phát hiện chuyển động |
-
-## 7. Phụ thuộc service khác
-
-Service này gọi đến service nào?
-
-• IoT Ingestion — lấy dữ liệu cảm biến
-
-• Camera Stream / AI Vision — lấy dữ liệu phát hiện
-
-• Access Gate — lấy dữ liệu ra/vào
-
-• Core Business — lấy dữ liệu cảnh báo/quyết định
-
-Service nào gọi đến service này?
-
-• Dashboard/Frontend — lấy báo cáo để hiển thị
-
-## 8. Sơ đồ minh họa
-```mermaid
-flowchart LR
-  IoT[IoT Ingestion] --> Analytics[Analytics Service]
-  Cam[Camera Stream] --> Analytics
-  AI[AI Vision] --> Analytics
-  Gate[Access Gate] --> Analytics
-  Core[Core Business] --> Analytics
-
-  Analytics --> DB[(PostgreSQL / MongoDB / SQLite)]
-  Analytics --> Dash[Dashboard / Frontend]
-```
-
----
-
+✔ Service có trách nhiệm:
+Thu thập dữ liệu từ nhiều nguồn (API, file, database)
+Xử lý và làm sạch dữ liệu
+Phân tích dữ liệu (thống kê, xu hướng)
+Cung cấp API cho frontend hoặc hệ thống khác
+❌ Service KHÔNG làm:
+Không xử lý giao diện người dùng (frontend)
+Không lưu trữ dữ liệu lâu dài (nếu dùng service riêng)
+Không xử lý xác thực người dùng (nếu có auth service riêng)
