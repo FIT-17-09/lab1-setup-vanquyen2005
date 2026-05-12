@@ -140,14 +140,3 @@ flowchart LR
 
 ---
 
-## 10. Biến môi trường gợi ý (không hard-code host nhóm khác)
-
-```env
-IOT_INGESTION_URL=http://localhost:PORT_IOT
-CAMERA_STREAM_URL=http://localhost:PORT_CAM
-AI_VISION_URL=http://localhost:PORT_AI
-ACCESS_GATE_URL=http://localhost:PORT_GATE
-CORE_BUSINESS_URL=http://localhost:PORT_CORE
-```
-
-Giá trị cụ thể sẽ thống nhất khi tích hợp; trong Docker Compose dùng tên service làm hostname.
